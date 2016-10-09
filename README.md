@@ -1,15 +1,12 @@
-# MarkupDiff.js
+# MarkupDiffjs
 
-
-
-MarkupDiff.js is a NodeJs tool for detecting differences in markup. It is built around a workflow style wherein markup is organized into discreet modules. Frontend developers create markup in one codebase (normally a frontend rapid prototyping environment), and backend developers mirror that markup in a separate codebase (normally a deep stack like a content management system). Detecting markup changes in this scenario can be difficult, and this tool helps to assist with that.
+MarkupDiffjs is a NodeJs tool for detecting differences in markup. It is built around a workflow style wherein markup is organized into discreet modules. One team creates markup in a codebase (normally a frontend rapid prototyping environment), and another team re-implements that markup in a separate codebase (normally a deep stack like a content management system). Detecting markup changes in this scenario can be difficult, and this tool helps to assist with that.
 
 ## Assumptions
 
-Your markup is stored in HTML files, with <html> and <body> elements. This is mostly to satisfy parsing by JSDOM, which
-will add a body element to any dom that doesn't already have one.
+Your markup is stored in HTML files.
 
-Your markup is modular, you are willing to delimit your modules with some kind of inline comment, and you can give your modules a unique name.
+Your markup is modular, you are willing to delimit your modules with some kind of inline comment, and you can give your modules unique names.
 
     <!--module:MyModule -->
     <div>
@@ -17,16 +14,16 @@ Your markup is modular, you are willing to delimit your modules with some kind o
     <div>
     <!--/module -->
 
-You care about markup structure, not content. Elements and attributes like class name matter, everything is noise. The following pieces of markup are therefore functionally identical even though image paths and alt/title differ.
+You want to check markup structure, not content. Elements and attributes like class name matter, everything else is noise. The following pieces of markup are therefore functionally identical even though image paths and alt/title differ.
 
-    File 1 :
+    File1.html :
     <!--module:MyModule -->
     <div class="MyModule">
        <img class="MyModule-image" src="someImage.jpg" alt="">
     <div>
     <!--/module -->
 
-    File 2 :
+    File2.html :
     <!--module:MyModule -->
     <div class="MyModule">
        <img class="MyModule-image" src="someOther.jpg" title="Some Other Image" />
@@ -35,14 +32,14 @@ You care about markup structure, not content. Elements and attributes like class
 
 The following are not identical because image class name differs.
 
-    File 1 :
+    File3.html :
     <!--module:MyModule -->
     <div class="MyModule">
        <img class="MyModule-image" src="someImage.jpg" />
     <div>
     <!--/module -->
 
-    File 2 :
+    File4.html :
     <!--module:MyModule -->
     <div class="MyModule">
        <img class="MyModule-otherimage" src="someImage.jpg" />
@@ -51,14 +48,14 @@ The following are not identical because image class name differs.
 
 and the following cannot be compared because module names differ even though markup is identical.
 
-    File 1 :
+    File5.html :
     <!--module:MyModule -->
     <div class="MyModule">
        <img class="MyModule-image" src="someImage.jpg" alt="">
     <div>
     <!--/module -->
 
-    File 2 :
+    File6.html :
     <!--module:MyOtherModule -->
     <div class="MyModule">
        <img class="MyModule-image" src="someImage.jpg" alt="">
@@ -67,28 +64,23 @@ and the following cannot be compared because module names differ even though mar
 
 ## Use
 
+Compare modules found in two local files.
 
-    var markupDiff = require('markupDiff.js');
+    var markupDiff = require('markupDiffjs');
     markupDiff.compare(
-        { path: './some/file1.html' },
-        { path: './some/file2.html' }
+        { glob: './some/file1.html' },
+        { glob: './some/file2.html' }
     );
 
-This directs MarkupDiff.js to compare modules found in two local files.
+Compare modules from a remote HTML document, and all the files nested in a local folder.
 
     markupDiff.compare(
-        { host: 'www.someDomain.com', port : 8080, path : 'doc.html'},
-        { path: './some/file2.html' }
+        { host: 'www.someDomain.com', port : 8080, path : '/doc.html'},
+        { glob: './some/path/**/*.html' },
+        { glob: './some/other/path/**/*.html' }
     );
 
-This directs MarkupDiff.js to compare modules from a remote HTML document, and a local file.
-
-    markupDiff.compare(
-        { path: './some/folder' },
-        { path: './some/file2.html' }
-    );
-
-This directs MarkupDiff.js to compare modules found in all files nested under a given folder, against a local file. Any combination (file, folder or url) can be used.
+Any combination of remote or local sources can be used.
 
 ## Options
 
@@ -98,10 +90,14 @@ Options is not required. It can be used to override the following default settin
         ...
         {
             encoding : 'utf8',
-            consoleOut : false,
-            matchAttributes : ['class', 'data-*'],
+            consoleOut : true,
+            consoleOutFirstErrorOnly : true
+            attributes : ['class', 'data-*'],
+            processInnerText : true,
             startModuleRegex : /<!--module:(\S*) -->/,
-            endModuleRegex : /<!--\/module -->/
+            endModuleRegex : /<!--\/module -->/,
+            startIgnoreRegex : /<!--module!ignore-->/,
+            endIgnoreRegex : /<!--\/module!ignore-->/
         }
     );
 
@@ -117,7 +113,7 @@ Default: true
 
 If true,  errors will be written to the console by MarkupDiff.js.
 
-### matchAttributes
+### attributes
 
 Default:  [] (all attributes).
 

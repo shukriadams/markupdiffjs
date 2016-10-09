@@ -1,13 +1,13 @@
 {
-  "name": "markupDiff",
+  "name": "markupDiffjs",
   "version" : "0.0.1",
-  "description" : "Compares markup",
+  "description" : "Finds differences in modular markup",
   "bin": {
     "markupDiff": "lib/markupDiff.js"
   },
   "repository" : {
     "type" : "git",
-    "url" : "git://github.com/shukriadams/markupDiff.js.git"
+    "url" : "git://github.com/shukriadams/markupdiffjs.git"
   },
   "dependencies": {
     "process" : "0.11.2",
@@ -18,9 +18,7 @@
     "lodash" : "3.5.0"
   },
   "devDependencies" : {
-    "mocha" : "2.3.3",
-    "serve-static" : "1.10.0",
-    "zombie" : "4.0.8"
+
   },
   "scripts": {
     "test": "mocha test ./test"
