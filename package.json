@@ -1,0 +1,30 @@
+{
+  "name": "markupDiff",
+  "version" : "0.0.1",
+  "description" : "Compares markup",
+  "bin": {
+    "markupDiff": "lib/markupDiff.js"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "git://github.com/shukriadams/markupDiff.js.git"
+  },
+  "dependencies": {
+    "process" : "0.11.2",
+    "colors" : "1.1.2",
+    "glob" : "7.1.0",
+    "yargs" : "3.26.0",
+    "jsdom-no-contextify" : "3.1.0",
+    "lodash" : "3.5.0"
+  },
+  "devDependencies" : {
+    "mocha" : "2.3.3",
+    "serve-static" : "1.10.0",
+    "zombie" : "4.0.8"
+  },
+  "scripts": {
+    "test": "mocha test ./test"
+  },  
+  "author": "Shukri Adams (shukri.adams@gmail.com)",
+  "license": "MIT"
+}
