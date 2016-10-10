@@ -1,10 +1,7 @@
 {
-  "name": "markupDiffjs",
+  "name": "markupDiff",
   "version" : "0.0.1",
   "description" : "Finds differences in modular markup",
-  "bin": {
-    "markupDiff": "lib/markupDiff.js"
-  },
   "repository" : {
     "type" : "git",
     "url" : "git://github.com/shukriadams/markupdiffjs.git"

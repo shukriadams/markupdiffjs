@@ -66,7 +66,7 @@ and the following cannot be compared because module names differ even though mar
 
 Compare modules found in two local files.
 
-    var markupDiff = require('markupDiffjs');
+    var markupDiff = require('markupDiff');
     markupDiff.compare(
         { glob: './some/file1.html' },
         { glob: './some/file2.html' }
