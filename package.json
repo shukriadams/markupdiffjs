@@ -1,6 +1,6 @@
 {
   "name": "markupDiff",
-  "version" : "0.0.1",
+  "version" : "0.0.2",
   "description" : "Finds differences in modular markup",
   "repository" : {
     "type" : "git",
